@@ -40,25 +40,20 @@ class WidgetIdResource(Resource):
         if widgetId > 999:
             raise ValueError('Widget ID should be less than 1000')
         else:
-            return WidgetService.get_by_id(widgetId)
+            widget = WidgetService.get_by_id(widgetId)
+            widget['name'][15] = 'Widget'
+            return widget
 
     def delete(self, widgetId: int) -> Response:
         """Delete Single Widget"""
         from flask import jsonify
-        if widgetId > 999:
-            raise ValueError('Widget ID should be less than 1000')
-        else:
-            id = WidgetService.delete_by_id(widgetId)
-            return jsonify(dict(status="Success", id=id))
+        id = WidgetService.delete_by_id(widgetId)
+        return jsonify(dict(status="Success", id=id))
 
     @accepts(schema=WidgetSchema, api=api)
     @responds(schema=WidgetSchema)
     def put(self, widgetId: int) -> Widget:
         """Update Single Widget"""
-
-        if widgetId > 999:
-            raise ValueError('Widget ID should be less than 1000')
-        else:
-            changes: WidgetInterface = request.parsed_obj
-            Widget = WidgetService.get_by_id(widgetId)
-            return WidgetService.update(Widget, changes)
+        changes: WidgetInterface = request.parsed_obj
+        Widget = WidgetService.get_by_id(widgetId)
+        return WidgetService.update(Widget, changes)
