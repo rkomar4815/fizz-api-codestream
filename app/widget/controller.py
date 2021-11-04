@@ -37,20 +37,28 @@ class WidgetIdResource(Resource):
     def get(self, widgetId: int) -> Widget:
         """Get Single Widget"""
 
-        return WidgetService.get_by_id(widgetId)
+        if widgetId < 0:
+            raise ValueError('Widget ID should be positive')
+        else:
+            return WidgetService.get_by_id(widgetId)
 
     def delete(self, widgetId: int) -> Response:
         """Delete Single Widget"""
         from flask import jsonify
-
-        id = WidgetService.delete_by_id(widgetId)
-        return jsonify(dict(status="Success", id=id))
+        if widgetId < 0:
+            raise ValueError('Widget ID should be positive')
+        else:
+            id = WidgetService.delete_by_id(widgetId)
+            return jsonify(dict(status="Success", id=id))
 
     @accepts(schema=WidgetSchema, api=api)
     @responds(schema=WidgetSchema)
     def put(self, widgetId: int) -> Widget:
         """Update Single Widget"""
 
-        changes: WidgetInterface = request.parsed_obj
-        Widget = WidgetService.get_by_id(widgetId)
-        return WidgetService.update(Widget, changes)
+        if widgetId < 0:
+            raise ValueError('Widget ID should be positive')
+        else:
+            changes: WidgetInterface = request.parsed_obj
+            Widget = WidgetService.get_by_id(widgetId)
+            return WidgetService.update(Widget, changes)
