@@ -1,5 +1,5 @@
-import newrelic.agent
-newrelic.agent.initialize('/home/ec2-user/flask_api_example/newrelic.ini')
+# import newrelic.agent
+# newrelic.agent.initialize('/home/ec2-user/flask_api_example/newrelic.ini')
 
 import os
 
