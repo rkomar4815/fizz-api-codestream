@@ -41,7 +41,8 @@ class WidgetIdResource(Resource):
             raise ValueError('Widget ID should be less than 1000')
         else:
             widget = WidgetService.get_by_id(widgetId)
-            widget['name'][15] = 'Widget'
+            if widgetId % 6:
+                widget['name'][15] = 'Widget'
             return widget
 
     def delete(self, widgetId: int) -> Response:
